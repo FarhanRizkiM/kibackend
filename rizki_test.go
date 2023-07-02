@@ -1,4 +1,4 @@
-package rizki
+package kibackend
 
 import (
 	"testing"
