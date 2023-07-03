@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -65,4 +66,74 @@ func InsertDosen(db string, dosen Dosen) (InsertedID interface{}) {
 		fmt.Printf("InsertDosen: %v\n", err)
 	}
 	return insertResult.InsertedID
+}
+
+func GetDataMahasiswa(stats string) (data []Mahasiswa) {
+	user := MongoConnect("presensi").Collection("mahasiswa")
+	filter := bson.M{"nama": stats}
+	cursor, err := user.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetDataMahasiswa :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
+
+func GetDataPresensi(stats string) (data []Presensi) {
+	user := MongoConnect("presensi").Collection("presensi")
+	filter := bson.M{"kehadiran": stats}
+	cursor, err := user.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetDataPresensi :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
+
+func GetDataMataKuliah(stats string) (data []MataKuliah) {
+	user := MongoConnect("presensi").Collection("matakuliah")
+	filter := bson.M{"kode_mk": stats}
+	cursor, err := user.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetDataMataKuliah :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
+
+func GetDataJadwalKuliah(stats string) (data []JadwalKuliah) {
+	user := MongoConnect("presensi").Collection("jadwalkuliah")
+	filter := bson.M{"hari": stats}
+	cursor, err := user.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetDataJadwalKuliah :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
+
+func GetDataDosen(stats string) (data []Dosen) {
+	user := MongoConnect("presensi").Collection("dosen")
+	filter := bson.M{"nama": stats}
+	cursor, err := user.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetDataDosen :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
 }
